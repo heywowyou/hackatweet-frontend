@@ -25,7 +25,7 @@ export default function LastTweets({ refresh }) {
         <p className="text-gray-400">No tweets found.</p>
       ) : (
         tweets
-          .slice(0, 10)
+          .slice(0, 30)
           .map((tweet) => (
             <Tweet
               key={tweet._id}
