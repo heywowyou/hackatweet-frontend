@@ -30,11 +30,13 @@ export default function Trends({ refresh }) {
             return (
               <li
                 key={tag.hashtag}
-                className="cursor-pointer hover:underline"
+                className="cursor-pointer"
                 onClick={() => router.push(`/hashtag/${name}`)}
               >
                 <div className="flex flex-col gap-y-2">
-                  <span className="text-white font-bold text-xl">#{name}</span>
+                  <span className="text-white font-bold text-xl hover:text-blue-400 hover:drop-shadow-lg transition duration-200">
+                    #{name}
+                  </span>
                   <span className="text-gray-400 text-sm">
                     {tag.count} tweet{tag.count > 1 ? "s" : ""}
                   </span>

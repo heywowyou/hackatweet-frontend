@@ -53,7 +53,7 @@ export default function Home() {
         </div>
         <button
           onClick={handleLogout}
-          className=" m-4 mt-2 px-10 py-2 text-white border border-gray-700 hover:border-gray-500 rounded-full transition duration-200 self-start cursor-pointer"
+          className=" m-4 mt-2 px-10 py-2 text-white border border-gray-700 hover:border-gray-500 hover:drop-shadow-lg  rounded-full transition duration-200 self-start cursor-pointer"
         >
           Logout
         </button>
