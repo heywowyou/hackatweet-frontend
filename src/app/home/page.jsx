@@ -1,13 +1,15 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-// import Trends from '../../components/Trends';
-// import LastTweets from '../../components/LastTweets';
+import Trends from '../../components/Trends';
+import LastTweets from '../../components/LastTweets';
+import AddTweet from '../../components/AddTweet';
 
 export default function Home() {
     const router = useRouter();
     const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+    const [refresh, setRefresh] = useState(false);
 
     useEffect(() => {
         if (!token) {
@@ -21,8 +23,8 @@ export default function Home() {
     };
 
     return (
-        <div className="flex h-screen w-full">
-            <aside className="w-1/4 bg-gray-100 p-6 flex flex-col justify-between">
+        <div className="flex h-screen w-full bg-[#15202B] text-white">
+            <aside className="w-1/4 p-6 flex flex-col justify-between border-r border-gray-700">
                 <div>
                     <img
                         src="/logo.png"
@@ -31,7 +33,7 @@ export default function Home() {
                         alt="Logo"
                     />
                     <div className="text-lg font-semibold">Hello 👋</div>
-                    <div className="text-sm text-gray-500">@username</div>
+                    <div className="text-sm text-gray-400">@{localStorage.getItem('username')}</div>
                 </div>
                 <button
                     onClick={handleLogout}
@@ -41,26 +43,14 @@ export default function Home() {
                 </button>
             </aside>
 
-            <main className="w-2/4 p-6 border-x border-gray-300 overflow-y-auto">
-                <div className="mb-4">
-                    <textarea
-                        placeholder="What's happening?"
-                        maxLength={280}
-                        className="w-full p-3 border border-gray-300 rounded resize-none"
-                    />
-                    <div className="flex justify-end mt-2">
-                        <button className="px-4 py-2 bg-blue-500 text-white rounded">
-                            Tweet
-                        </button>
-                    </div>
-                </div>
-
+            <main className="w-2/4 p-6 border-x border-gray-700 overflow-y-auto">
+                <AddTweet onTweetPosted={() => setRefresh(!refresh)} />
                 <h2 className="text-xl font-bold mb-4">Last Tweets</h2>
-                {/* <LastTweets /> */}
+                <LastTweets refresh={refresh} />
             </main>
 
             <aside className="w-1/4 p-6">
-                {/* <Trends /> */}
+                <Trends />
             </aside>
         </div>
     );

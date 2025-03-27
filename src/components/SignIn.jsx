@@ -20,6 +20,7 @@ export default function SignIn({ onClose }) {
             localStorage.setItem('token', data.token);
             localStorage.setItem('username', data.username);
             localStorage.setItem('email', data.email);
+            localStorage.setItem('userId', data.userId);
             window.location.href = '/home';
         } else {
             alert('Erreur : ' + data.error);
