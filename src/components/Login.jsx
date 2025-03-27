@@ -1,5 +1,4 @@
 'use client';
-
 import { useState } from 'react';
 import SignUp from './SignUp';
 import SignIn from './SignIn';
@@ -9,21 +8,33 @@ export default function Login() {
     const [isSignInOpen, setSignInOpen] = useState(false);
 
     return (
-        <div className="flex h-screen">
-            <div className="w-1/2 bg-gray-100 flex items-center justify-center">
-                <img
-                    src="../../../twitter-logo.png"
-                    alt="Logo Hackatweet"
-                />
+        <div className="flex h-screen w-full font-['Verdana']">
+            {/* LEFT SECTION */}
+            <div className="w-1/2 bg-cover bg-center relative" style={{ backgroundImage: "url('/bg-left.png')" }}>
             </div>
-            <div className="w-1/2 flex flex-col justify-center items-center space-y-4">
-                <h1 className="text-3xl font-bold">Welcome to Hackatweet</h1>
-                <button className="px-4 py-2 bg-blue-500 text-white rounded" onClick={() => setSignUpOpen(true)}>
+
+            {/* RIGHT SECTION */}
+            <div className="w-1/2 bg-[#15202B] text-white flex flex-col justify-center items-start px-16 space-y-6">
+                <img src="/logo.png" className="w-10 mb-4" alt="Mini Logo" />
+                <h1 className="text-6xl font-bold leading-snug">See what’s<br />happening</h1>
+                <p className="text-2xl font-semibold">Join Hackatweet today.</p>
+
+                <button
+                    onClick={() => setSignUpOpen(true)}
+                    className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-8 rounded-full text-lg"
+                >
                     Sign up
                 </button>
-                <button className="px-4 py-2 bg-white border border-blue-500 text-blue-500 rounded" onClick={() => setSignInOpen(true)}>
-                    Sign in
-                </button>
+
+                <div className="text-sm">
+                    Already have an account?{' '}
+                    <button
+                        onClick={() => setSignInOpen(true)}
+                        className="text-blue-400 hover:underline ml-1"
+                    >
+                        Sign in
+                    </button>
+                </div>
 
                 {isSignUpOpen && <SignUp onClose={() => setSignUpOpen(false)} />}
                 {isSignInOpen && <SignIn onClose={() => setSignInOpen(false)} />}

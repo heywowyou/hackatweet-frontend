@@ -1,5 +1,4 @@
 'use client';
-
 import { useState } from 'react';
 
 export default function SignUp({ onClose }) {
@@ -10,7 +9,6 @@ export default function SignUp({ onClose }) {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // ⚠️ À adapter avec l'URL réelle du backend plus tard
         const response = await fetch('http://localhost:3001/users/signup', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -21,6 +19,8 @@ export default function SignUp({ onClose }) {
 
         if (data.result) {
             localStorage.setItem('token', data.token);
+            localStorage.setItem('username', data.username);
+            localStorage.setItem('email', data.email);
             window.location.href = '/home';
         } else {
             alert('Erreur : ' + data.error);
@@ -28,17 +28,19 @@ export default function SignUp({ onClose }) {
     };
 
     return (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-            <div className="bg-white p-6 rounded-lg shadow-md w-96 relative">
-                <button className="absolute top-2 right-3 text-gray-500" onClick={onClose}>✕</button>
-                <h2 className="text-xl font-semibold mb-4">Create your account</h2>
+        <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex justify-center items-center z-50">
+            <div className="bg-[#15202B] p-8 rounded-xl shadow-lg w-[90%] max-w-md relative text-white">
+                <button className="absolute top-3 right-4 text-white text-xl" onClick={onClose}>×</button>
+                <img src="/logo.png" className="w-8 mx-auto mb-4" alt="Logo" />
+                <h2 className="text-2xl font-bold text-center mb-4">Create your Hackatweet account</h2>
+
                 <form onSubmit={handleSubmit} className="flex flex-col space-y-3">
                     <input
                         type="text"
                         placeholder="Username"
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
-                        className="border p-2 rounded"
+                        className="bg-[#192734] border border-gray-600 text-white px-4 py-2 rounded placeholder-gray-400"
                         required
                     />
                     <input
@@ -46,7 +48,7 @@ export default function SignUp({ onClose }) {
                         placeholder="Email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        className="border p-2 rounded"
+                        className="bg-[#192734] border border-gray-600 text-white px-4 py-2 rounded placeholder-gray-400"
                         required
                     />
                     <input
@@ -54,10 +56,13 @@ export default function SignUp({ onClose }) {
                         placeholder="Password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        className="border p-2 rounded"
+                        className="bg-[#192734] border border-gray-600 text-white px-4 py-2 rounded placeholder-gray-400"
                         required
                     />
-                    <button type="submit" className="bg-blue-500 text-white py-2 rounded">
+                    <button
+                        type="submit"
+                        className="bg-white text-black py-2 rounded font-semibold hover:bg-gray-200"
+                    >
                         Sign up
                     </button>
                 </form>
