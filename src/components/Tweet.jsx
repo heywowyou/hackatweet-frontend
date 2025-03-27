@@ -1,5 +1,8 @@
 "use client";
 import { useState } from "react";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+dayjs.extend(relativeTime);
 
 export default function Tweet({ tweet, onLike, onDelete }) {
   const token = localStorage.getItem("token");
@@ -74,7 +77,7 @@ export default function Tweet({ tweet, onLike, onDelete }) {
               )}
             </div>
             <div className="text-sm text-gray-500 mt-2">
-              {new Date(tweet.date).toLocaleString()}
+              {dayjs(tweet.date).fromNow()}
             </div>
           </div>
         </div>
