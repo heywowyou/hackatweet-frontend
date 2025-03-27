@@ -25,19 +25,20 @@ export default function AddTweet({ onTweetPosted }) {
   };
 
   return (
-    <div className="mb-4">
+    <div className="m-6 mb-4">
       <textarea
         placeholder="What's happening?"
         maxLength={280}
         value={content}
         onChange={(e) => setContent(e.target.value)}
-        className="w-full p-3 border border-gray-700 rounded resize-none bg-[#192734] text-white"
+        rows={1}
+        className="w-full h-20 px-10 border border-gray-700 rounded-full resize-none bg-[#192734] text-white placeholder:text-gray-400 text-lg leading-[4.4] overflow-hidden"
       />
-      <div className="flex justify-between mt-2">
-        <span className="text-sm text-gray-400">{content.length}/280</span>
+      <div className="flex justify-between mx-10">
+        <span className="text-base text-gray-400">{content.length}/280</span>
         <button
           onClick={handleTweet}
-          className="px-6 py-2 bg-blue-500 hover:bg-blue-600 hover:drop-shadow-lg text-white font-bold text-xl tracking-wide rounded-full "
+          className="mt-1 px-6 py-2 bg-blue-500 hover:bg-blue-600 hover:drop-shadow-lg text-white font-bold text-xl tracking-wide rounded-full"
         >
           Tweet
         </button>
