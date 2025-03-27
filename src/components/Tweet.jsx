@@ -39,7 +39,7 @@ export default function Tweet({ tweet, onLike, onDelete }) {
         const data = await response.json();
 
         if (data.result && onDelete) {
-            onDelete(); // Rafraîchir la liste
+            onDelete();
         }
     };
 
@@ -48,21 +48,28 @@ export default function Tweet({ tweet, onLike, onDelete }) {
     return (
         <div className="border border-gray-700 p-4 rounded shadow-sm">
             <div className="flex justify-between">
-                <div>
-                    <div className="font-semibold">@{tweet.author.username}</div>
-                    <div className="mt-1">
-                        {tweet.content.split(/(\s+)/).map((part, i) =>
-                            part.startsWith('#') ? (
-                                <span key={i} className="text-blue-400 hover:underline cursor-pointer">
-                                    {part}
-                                </span>
-                            ) : (
-                                <span key={i}>{part}</span>
-                            )
-                        )}
-                    </div>
-                    <div className="text-sm text-gray-500 mt-2">
-                        {new Date(tweet.date).toLocaleString()}
+                <div className="flex gap-3">
+                    <img
+                        src={tweet.author.avatar}
+                        alt="Avatar"
+                        className="w-10 h-10 rounded-full object-cover border border-gray-600"
+                    />
+                    <div>
+                        <div className="font-semibold">@{tweet.author.username}</div>
+                        <div className="mt-1">
+                            {tweet.content.split(/(\s+)/).map((part, i) =>
+                                part.startsWith('#') ? (
+                                    <span key={i} className="text-blue-400 hover:underline cursor-pointer">
+                                        {part}
+                                    </span>
+                                ) : (
+                                    <span key={i}>{part}</span>
+                                )
+                            )}
+                        </div>
+                        <div className="text-sm text-gray-500 mt-2">
+                            {new Date(tweet.date).toLocaleString()}
+                        </div>
                     </div>
                 </div>
 
