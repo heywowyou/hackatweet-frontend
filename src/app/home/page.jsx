@@ -59,7 +59,7 @@ export default function Home() {
         </button>
       </aside>
 
-      <main className="w-2/4 p-6 border-x border-gray-700 overflow-y-auto">
+      <main className="w-2/4 p-6 border-x border-gray-700 overflow-y-auto scrollbar-hidden">
         <AddTweet onTweetPosted={() => setRefresh(!refresh)} />
         <h2 className="text-xl font-bold mb-4">Last Tweets</h2>
         <LastTweets refresh={refresh} />
