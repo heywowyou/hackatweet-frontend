@@ -43,19 +43,17 @@ export default function Home() {
         <div>
           <img
             src="/logo.png"
-            className="w-12 transform -scale-x-100 cursor-pointer mb-6"
+            className="w-30 transform -scale-x-100 cursor-pointer m-4"
             onClick={() => router.push("/home")}
             alt="Logo"
           />
-          <div className="text-lg font-semibold">Hello 👋</div>
-          <div className="text-sm text-gray-400">@{username}</div>
         </div>
-        <div className="flex-1 flex items-end my-2">
+        <div className="m-4 flex-1 flex items-end my-2">
           <ProfileBlock username={username} />
         </div>
         <button
           onClick={handleLogout}
-          className="mt-4 px-10 py-2 text-white border border-gray-700 hover:border-gray-500 rounded-full transition duration-200 self-start"
+          className=" m-4 mt-2 px-10 py-2 text-white border border-gray-700 hover:border-gray-500 rounded-full transition duration-200 self-start cursor-pointer"
         >
           Logout
         </button>
