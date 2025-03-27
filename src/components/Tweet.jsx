@@ -50,7 +50,17 @@ export default function Tweet({ tweet, onLike, onDelete }) {
             <div className="flex justify-between">
                 <div>
                     <div className="font-semibold">@{tweet.author.username}</div>
-                    <div className="mt-1">{tweet.content}</div>
+                    <div className="mt-1">
+                        {tweet.content.split(/(\s+)/).map((part, i) =>
+                            part.startsWith('#') ? (
+                                <span key={i} className="text-blue-400 hover:underline cursor-pointer">
+                                    {part}
+                                </span>
+                            ) : (
+                                <span key={i}>{part}</span>
+                            )
+                        )}
+                    </div>
                     <div className="text-sm text-gray-500 mt-2">
                         {new Date(tweet.date).toLocaleString()}
                     </div>

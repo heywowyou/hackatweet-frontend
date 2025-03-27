@@ -50,7 +50,7 @@ export default function Home() {
             </main>
 
             <aside className="w-1/4 p-6">
-                <Trends />
+                <Trends refresh={refresh} />
             </aside>
         </div>
     );
