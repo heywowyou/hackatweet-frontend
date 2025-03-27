@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import Trends from "../../components/Trends";
 import LastTweets from "../../components/LastTweets";
 import AddTweet from "../../components/AddTweet";
+import ProfileBlock from "../../components/ProfileBlock";
 
 export default function Home() {
   const router = useRouter();
@@ -48,6 +49,9 @@ export default function Home() {
           />
           <div className="text-lg font-semibold">Hello 👋</div>
           <div className="text-sm text-gray-400">@{username}</div>
+        </div>
+        <div className="flex-1 flex items-end my-2">
+          <ProfileBlock username={username} />
         </div>
         <button
           onClick={handleLogout}
