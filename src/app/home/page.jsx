@@ -1,5 +1,4 @@
 'use client';
-
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Trends from '../../components/Trends';
@@ -8,19 +7,34 @@ import AddTweet from '../../components/AddTweet';
 
 export default function Home() {
     const router = useRouter();
-    const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
     const [refresh, setRefresh] = useState(false);
+    const [username, setUsername] = useState('');
+    const [token, setToken] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        if (!token) {
+        if (typeof window !== 'undefined') {
+            const storedToken = localStorage.getItem('token');
+            const storedUsername = localStorage.getItem('username');
+            setToken(storedToken);
+            setUsername(storedUsername);
+            setIsLoading(false);
+        }
+    }, []);
+
+    useEffect(() => {
+        if (!isLoading && !token) {
             router.push('/');
         }
-    }, [token, router]);
+    }, [isLoading, token, router]);
 
     const handleLogout = () => {
         localStorage.removeItem('token');
+        localStorage.removeItem('username');
         router.push('/');
     };
+
+    if (isLoading) return null; 
 
     return (
         <div className="flex h-screen w-full bg-[#15202B] text-white">
@@ -33,7 +47,7 @@ export default function Home() {
                         alt="Logo"
                     />
                     <div className="text-lg font-semibold">Hello 👋</div>
-                    <div className="text-sm text-gray-400">@{localStorage.getItem('username')}</div>
+                    <div className="text-sm text-gray-400">@{username}</div>
                 </div>
                 <button
                     onClick={handleLogout}
