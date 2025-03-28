@@ -69,9 +69,6 @@ export default function HashtagPage() {
             Search
           </button>
         </form>
-
-        <AddTweet onTweetPosted={handleTweetPosted} />
-
         <h2 className="text-xl font-bold mb-4">Results for #{hashtag}</h2>
         {tweets.length === 0 ? (
           <p className="text-gray-400">No tweets found with #{hashtag}</p>
