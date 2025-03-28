@@ -22,19 +22,19 @@ export default function RecentFollowing({ token }) {
   if (following.length === 0) return null;
 
   return (
-    <div className="mt-8">
-      <h3 className="text-lg font-semibold text-white mb-4 ml-2">
-        Recent Following
-      </h3>
+    <div className="mt-8 border border-gray-700 p-4 rounded-3xl shadow-sm">
+      <h3 className="text-2xl font-semibold text-white mb-4 ml-2">Friends</h3>
       <ul className="space-y-3">
         {following.map((user) => (
-          <li key={user.username} className="flex items-center gap-3 ml-2">
+          <li key={user.username} className="flex items-center gap-2 ml-2">
             <img
               src={user.avatar || "/oeuf.jpg"}
               alt="avatar"
-              className="w-10 h-10 rounded-full border border-gray-600"
+              className="w-16 h-16 rounded-full border border-gray-700"
             />
-            <span className="text-white">@{user.username}</span>
+            <span className="text-white text-lg font-semibold">
+              @{user.username}
+            </span>
           </li>
         ))}
       </ul>

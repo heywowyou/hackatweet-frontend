@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Tweet from "@/components/Tweet";
 import Trends from "@/components/Trends";
 import AddTweet from "@/components/AddTweet";
+import RecentFollowing from "@/components/Following";
 
 export default function HashtagPage() {
   const { hashtag } = useParams();
@@ -12,6 +13,16 @@ export default function HashtagPage() {
   const [tweets, setTweets] = useState([]);
   const [search, setSearch] = useState("");
   const [refreshFlag, setRefreshFlag] = useState(false);
+
+  const [token, setToken] = useState(null);
+
+  // Get token from localStorage
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const storedToken = localStorage.getItem("token");
+      setToken(storedToken);
+    }
+  }, []);
 
   const fetchTweets = () => {
     if (!hashtag) return;
@@ -82,6 +93,7 @@ export default function HashtagPage() {
           <div className="mb-6">
             <h3 className="text-lg font-semibold text-white mb-3">Trends</h3>
             <Trends refresh={refreshFlag} />
+            <RecentFollowing token={token} />
           </div>
         </div>
       </aside>

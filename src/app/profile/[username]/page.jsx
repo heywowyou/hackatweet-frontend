@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import ProfileBlock from "@/components/ProfileBlock";
 import Tweet from "@/components/Tweet";
+import RecentFollowing from "@/components/Following";
 
 export default function Profile() {
   const router = useRouter();
@@ -176,7 +177,9 @@ export default function Profile() {
         </div>
       </main>
 
-      <aside className="w-1/4 p-6" />
+      <aside className="w-1/4 p-6">
+        <RecentFollowing token={token} />
+      </aside>
     </div>
   );
 }
