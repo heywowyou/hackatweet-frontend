@@ -103,7 +103,6 @@ export default function HashtagPage() {
       <aside className="w-1/4 p-6">
         <div className="sticky top-6">
           <div className="mb-6">
-            <h3 className="text-lg font-semibold text-white mb-3">Trends</h3>
             <Trends refresh={refreshFlag} />
             <RecentFollowing token={token} />
           </div>
