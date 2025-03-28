@@ -8,43 +8,38 @@ export default function Login() {
   const [isSignInOpen, setSignInOpen] = useState(false);
 
   return (
-    <div className="flex min-h-screen w-full font-['Verdana']">
+    <div className="flex flex-col md:flex-row min-h-screen w-full font-['Verdana']">
       {/* LEFT SECTION */}
       <div
-        className="w-1/2 bg-cover bg-center relative"
+        className="hidden md:block md:w-1/2 bg-cover bg-center"
         style={{ backgroundImage: "url('/3437659.jpg')" }}
       ></div>
 
       {/* RIGHT SECTION */}
-      <div className="w-1/2 bg-[#15202B] text-white flex flex-col px-16">
-        {/* Grouped content under logo */}
-        <div className="space-y-6 mt-20">
-          <img src="/logo.png" className="w-100 m-0" alt="Mini Logo" />
+      <div className="w-full md:w-1/2 bg-[#15202B] text-white flex flex-col justify-center items-start px-6 md:px-16 py-12 space-y-6">
+        <img src="/logo.png" className="w-12 md:w-16 mb-2" alt="Mini Logo" />
 
-          <h1 className="text-6xl font-bold leading-snug">
-            See what’s
-            <br />
-            happening
-          </h1>
+        <h1 className="text-4xl md:text-6xl font-bold leading-snug">
+          See what’s<br />happening
+        </h1>
 
-          <p className="text-2xl font-semibold">Join Hackatweet today.</p>
+        <p className="text-xl md:text-2xl font-semibold">Join Hackatweet today.</p>
 
+        <button
+          onClick={() => setSignUpOpen(true)}
+          className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-6 md:px-8 rounded-full text-lg"
+        >
+          Sign up
+        </button>
+
+        <div className="text-sm">
+          Already have an account?{" "}
           <button
-            onClick={() => setSignUpOpen(true)}
-            className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-8 rounded-full text-lg"
+            onClick={() => setSignInOpen(true)}
+            className="text-blue-400 hover:underline ml-1"
           >
-            Sign up
+            Sign in
           </button>
-
-          <div className="text-sm">
-            Already have an account?{" "}
-            <button
-              onClick={() => setSignInOpen(true)}
-              className="text-blue-400 hover:underline ml-1"
-            >
-              Sign in
-            </button>
-          </div>
         </div>
 
         {/* Modals */}
