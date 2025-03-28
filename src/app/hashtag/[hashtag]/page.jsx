@@ -76,7 +76,7 @@ export default function HashtagPage() {
         </button>
       </aside>
 
-      <main className="w-2/4 p-6 border-x border-gray-700 overflow-y-auto">
+      <main className="w-2/4 p-6 border-x border-gray-700 overflow-y-auto ">
         <form onSubmit={handleSearch} className="mb-6 flex gap-2">
           <input
             type="text"
@@ -92,11 +92,15 @@ export default function HashtagPage() {
             Search
           </button>
         </form>
-        <h2 className="text-xl font-bold mb-4">Results for #{hashtag}</h2>
+        <h2 className="text-xl font-bold mb-4 ">Results for #{hashtag}</h2>
         {tweets.length === 0 ? (
           <p className="text-gray-400">No tweets found with #{hashtag}</p>
         ) : (
-          tweets.map((tweet) => <Tweet key={tweet._id} tweet={tweet} />)
+          <div className="space-y-4">
+            {tweets.map((tweet) => (
+              <Tweet key={tweet._id} tweet={tweet} />
+            ))}
+          </div>
         )}
       </main>
 
