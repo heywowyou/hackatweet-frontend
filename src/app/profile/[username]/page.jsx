@@ -39,7 +39,7 @@ export default function Profile() {
       if (!usernameToQuery) return;
 
       const response = await fetch(
-        `${process.env.BACKEND_URL}/tweets/user/${usernameToQuery}`
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/tweets/user/${usernameToQuery}`
       );
       const data = await response.json();
       if (data.result) {

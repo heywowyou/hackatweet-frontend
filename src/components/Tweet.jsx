@@ -19,7 +19,7 @@ export default function Tweet({ tweet, onLike, onDelete }) {
 
   const handleLike = async () => {
     const response = await fetch(
-      `${process.env.BACKEND_URL}/tweets/like/${tweet._id}`,
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/tweets/like/${tweet._id}`,
       {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
@@ -41,7 +41,7 @@ export default function Tweet({ tweet, onLike, onDelete }) {
     if (!confirmed) return;
 
     const response = await fetch(
-      `${process.env.BACKEND_URL}/tweets/${tweet._id}`,
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/tweets/${tweet._id}`,
       {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },

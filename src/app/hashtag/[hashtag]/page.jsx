@@ -16,7 +16,7 @@ export default function HashtagPage() {
   const fetchTweets = () => {
     if (!hashtag) return;
 
-    fetch(`${process.env.BACKEND_URL}/tweets/hashtag/${hashtag}`)
+    fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/tweets/hashtag/${hashtag}`)
       .then((res) => res.json())
       .then((data) => {
         if (data.result) {

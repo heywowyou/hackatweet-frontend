@@ -6,7 +6,7 @@ export default function LastTweets({ refresh }) {
   const [tweets, setTweets] = useState([]);
 
   const fetchTweets = () => {
-    fetch(`${process.env.BACKEND_URL}/tweets`)
+    fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/tweets`)
       .then((res) => res.json())
       .then((data) => {
         if (data.result) {

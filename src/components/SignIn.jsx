@@ -8,11 +8,14 @@ export default function SignIn({ onClose }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const response = await fetch(`${process.env.BACKEND_URL}/users/signin`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username, password }),
-    });
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/users/signin`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password }),
+      }
+    );
 
     const data = await response.json();
 
