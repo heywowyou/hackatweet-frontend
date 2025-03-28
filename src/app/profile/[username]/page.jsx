@@ -7,14 +7,16 @@ import Tweet from "../../../components/Tweet";
 export default function Profile() {
   const router = useRouter();
   const params = useParams();
-  const viewedUsername = params?.username; // from URL if viewing another user
+  const viewedUsername = params?.username;
 
   const [username, setUsername] = useState("");
   const [token, setToken] = useState(null);
+  const [targetToken, setTargetToken] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [tweets, setTweets] = useState([]);
+  const [isFollowing, setIsFollowing] = useState(false);
 
-  const isOwnProfile = !viewedUsername;
+  const isOwnProfile = !viewedUsername || viewedUsername === username;
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -32,14 +34,14 @@ export default function Profile() {
     }
   }, [isLoading, token, router]);
 
-  // Fetch tweets for current user or viewed profile
+  // Fetch tweets
   useEffect(() => {
     const fetchTweets = async () => {
-      const usernameToQuery = viewedUsername || username;
-      if (!usernameToQuery) return;
+      const name = viewedUsername || username;
+      if (!name) return;
 
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/tweets/user/${usernameToQuery}`
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/tweets/user/${name}`
       );
       const data = await response.json();
       if (data.result) {
@@ -48,6 +50,51 @@ export default function Profile() {
     };
     fetchTweets();
   }, [username, viewedUsername]);
+
+  // Fetch target user's token and following status
+  useEffect(() => {
+    const fetchConnectionStatus = async () => {
+      if (!viewedUsername || !token || viewedUsername === username) return;
+
+      // Step 1: Get targetToken from backend
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/users/${viewedUsername}`
+      );
+      const data = await res.json();
+      if (!data.result) return;
+
+      setTargetToken(data.user.token);
+
+      // Step 2: Get current user's following list
+      const con = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/users/connections/${token}`
+      );
+      const list = await con.json();
+      if (list.result) {
+        const followingUsernames = list.following.map((u) => u.username);
+        setIsFollowing(followingUsernames.includes(viewedUsername));
+      }
+    };
+    fetchConnectionStatus();
+  }, [token, username, viewedUsername]);
+
+  const handleFollowToggle = async () => {
+    if (!token || !targetToken) return;
+
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/users/follow`,
+      {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ token, targetToken }),
+      }
+    );
+
+    const data = await res.json();
+    if (data.result) {
+      setIsFollowing(data.following);
+    }
+  };
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -70,18 +117,30 @@ export default function Profile() {
             alt="Logo"
           />
         </div>
-        {isOwnProfile && (
-          <button
-            onClick={handleLogout}
-            className="m-4 mt-2 px-10 py-2 text-white border border-gray-700 hover:border-gray-500 hover:drop-shadow-lg rounded-full transition duration-200 self-start cursor-pointer"
-          >
-            Logout
-          </button>
-        )}
+        <button
+          onClick={handleLogout}
+          className="m-4 mt-2 px-10 py-2 text-white border border-gray-700 hover:border-gray-500 hover:drop-shadow-lg rounded-full transition duration-200 self-start cursor-pointer"
+        >
+          Logout
+        </button>
       </aside>
 
       <main className="w-2/4 p-10 border-x border-gray-700 overflow-y-auto scrollbar-hidden">
-        <ProfileBlock username={displayName} />
+        <div className="flex items-center justify-between">
+          <ProfileBlock username={displayName} />
+          {!isOwnProfile && (
+            <button
+              onClick={handleFollowToggle}
+              className={`px-6 py-2 text-white font-semibold rounded-full border transition duration-200 ${
+                isFollowing
+                  ? "bg-transparent border-gray-600 hover:border-red-500 hover:text-red-400"
+                  : "bg-blue-500 hover:bg-blue-600"
+              }`}
+            >
+              {isFollowing ? "Unfollow" : "Follow"}
+            </button>
+          )}
+        </div>
         <h2 className="text-xl font-bold my-6 ml-2">Tweets</h2>
         <div className="space-y-4">
           {tweets.length === 0 ? (
@@ -91,10 +150,9 @@ export default function Profile() {
               <Tweet
                 key={tweet._id}
                 tweet={tweet}
-                onDelete={() => {
-                  // Optional: refresh tweets after delete
-                  setTweets((prev) => prev.filter((t) => t._id !== tweet._id));
-                }}
+                onDelete={() =>
+                  setTweets((prev) => prev.filter((t) => t._id !== tweet._id))
+                }
               />
             ))
           )}
