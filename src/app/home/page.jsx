@@ -1,10 +1,11 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import Trends from "../../components/Trends";
-import LastTweets from "../../components/LastTweets";
-import AddTweet from "../../components/AddTweet";
-import ProfileBlock from "../../components/ProfileBlock";
+import Trends from "@/components/Trends";
+import LastTweets from "@/components/LastTweets";
+import AddTweet from "@/components/AddTweet";
+import ProfileBlock from "@/components/ProfileBlock";
+import RecentFollowing from "@/components/RecentFollowing";
 
 export default function Home() {
   const router = useRouter();
@@ -48,6 +49,7 @@ export default function Home() {
             alt="Logo"
           />
         </div>
+        <RecentFollowing token={token} />
         <div className="m-4 flex-1 flex items-end my-2">
           <ProfileBlock username={username} />
         </div>

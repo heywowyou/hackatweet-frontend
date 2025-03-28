@@ -1,8 +1,8 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
-import ProfileBlock from "../../../components/ProfileBlock";
-import Tweet from "../../../components/Tweet";
+import ProfileBlock from "@/components/ProfileBlock";
+import Tweet from "@/components/Tweet";
 
 export default function Profile() {
   const router = useRouter();

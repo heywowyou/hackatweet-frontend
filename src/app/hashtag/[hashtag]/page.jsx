@@ -1,9 +1,9 @@
 "use client";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import Tweet from "../../../components/Tweet";
-import Trends from "../../../components/Trends";
-import AddTweet from "../../../components/AddTweet";
+import Tweet from "@/components/Tweet";
+import Trends from "@/components/Trends";
+import AddTweet from "@/components/AddTweet";
 
 export default function HashtagPage() {
   const { hashtag } = useParams();
