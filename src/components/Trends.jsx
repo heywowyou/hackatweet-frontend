@@ -7,7 +7,7 @@ export default function Trends({ refresh }) {
   const router = useRouter();
 
   const fetchTrends = () => {
-    fetch("http://localhost:3001/tweets/trends")
+    fetch(`${process.env.BACKEND_URL}/tweets/trends`)
       .then((res) => res.json())
       .then((data) => {
         if (data.result) {

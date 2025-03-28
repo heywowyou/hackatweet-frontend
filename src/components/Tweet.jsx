@@ -19,7 +19,7 @@ export default function Tweet({ tweet, onLike, onDelete }) {
 
   const handleLike = async () => {
     const response = await fetch(
-      `http://localhost:3001/tweets/like/${tweet._id}`,
+      `${process.env.BACKEND_URL}/tweets/like/${tweet._id}`,
       {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
@@ -40,11 +40,14 @@ export default function Tweet({ tweet, onLike, onDelete }) {
     const confirmed = confirm("Are you sure you want to delete this tweet?");
     if (!confirmed) return;
 
-    const response = await fetch(`http://localhost:3001/tweets/${tweet._id}`, {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ token }),
-    });
+    const response = await fetch(
+      `${process.env.BACKEND_URL}/tweets/${tweet._id}`,
+      {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ token }),
+      }
+    );
 
     const data = await response.json();
 

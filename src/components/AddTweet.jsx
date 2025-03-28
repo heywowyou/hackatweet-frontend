@@ -8,7 +8,7 @@ export default function AddTweet({ onTweetPosted }) {
     const token = localStorage.getItem("token");
     if (!content || content.length > 280 || !token) return;
 
-    const response = await fetch("http://localhost:3001/tweets", {
+    const response = await fetch(`${process.env.BACKEND_URL}/tweets`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ content, token }),
