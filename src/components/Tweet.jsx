@@ -14,8 +14,8 @@ export default function Tweet({ tweet, onLike, onDelete }) {
 
   const [isLiked, setIsLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
+  const [showModal, setShowModal] = useState(false);
 
-  // Sync when tweet updates
   useEffect(() => {
     setIsLiked(tweet.likes.some((user) => user._id === currentUserId));
     setLikeCount(tweet.likes.length);
@@ -30,9 +30,7 @@ export default function Tweet({ tweet, onLike, onDelete }) {
         body: JSON.stringify({ token }),
       }
     );
-
     const data = await response.json();
-
     if (data.result) {
       setIsLiked(!isLiked);
       setLikeCount((prev) => (isLiked ? prev - 1 : prev + 1));
@@ -40,10 +38,7 @@ export default function Tweet({ tweet, onLike, onDelete }) {
     }
   };
 
-  const handleDelete = async () => {
-    const confirmed = confirm("Are you sure you want to delete this tweet?");
-    if (!confirmed) return;
-
+  const confirmDelete = async () => {
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_BACKEND_URL}/tweets/${tweet._id}`,
       {
@@ -52,9 +47,8 @@ export default function Tweet({ tweet, onLike, onDelete }) {
         body: JSON.stringify({ token }),
       }
     );
-
     const data = await response.json();
-
+    setShowModal(false);
     if (data.result && onDelete) {
       onDelete();
     }
@@ -63,9 +57,9 @@ export default function Tweet({ tweet, onLike, onDelete }) {
   const isAuthor = tweet.author._id.toString() === currentUserId;
 
   return (
-    <div className="border border-gray-700 p-4 rounded-3xl shadow-sm">
-      <div className="flex justify-between">
-        <div className="flex gap-3">
+    <>
+      <div className="border border-gray-700 p-4 rounded-3xl shadow-sm">
+        <div className="flex justify-between">
           <div
             className="flex gap-3 cursor-pointer"
             onClick={() => router.push(`/profile/${tweet.author.username}`)}
@@ -95,35 +89,60 @@ export default function Tweet({ tweet, onLike, onDelete }) {
               </div>
             </div>
           </div>
+
+          {isAuthor && (
+            <button
+              onClick={() => setShowModal(true)}
+              className="text-red-400 hover:text-red-600 text-lg"
+              title="Delete tweet"
+            >
+              <FontAwesomeIcon icon={faTrashAlt} />
+            </button>
+          )}
         </div>
 
-        {isAuthor && (
-          <button
-            onClick={handleDelete}
-            className="text-red-400 hover:text-red-600 text-lg"
-            title="Delete tweet"
-          >
-            <FontAwesomeIcon icon={faTrashAlt} />
-          </button>
-        )}
+        <div className="mt-3 ml-6 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <button onClick={handleLike}>
+              <FontAwesomeIcon
+                icon={faHeart}
+                className={`text-xl transition-colors ${isLiked ? "text-red-500" : "text-white"
+                  } hover:text-red-400`}
+              />
+            </button>
+            <span className="text-sm text-gray-400">{likeCount}</span>
+          </div>
+          <div className="text-sm text-gray-500">
+            {dayjs(tweet.date).fromNow()}
+          </div>
+        </div>
       </div>
 
-      <div className="mt-3 ml-6 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <button onClick={handleLike}>
-            <FontAwesomeIcon
-              icon={faHeart}
-              className={`text-xl transition-colors ${
-                isLiked ? "text-red-500" : "text-white"
-              } hover:text-red-400`}
-            />
-          </button>
-          <span className="text-sm text-gray-400">{likeCount}</span>
+      {/* Modal */}
+      {showModal && (
+        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50">
+          <div className="bg-[#15202B] p-6 rounded-xl text-white w-[90%] max-w-md text-center">
+            <h2 className="text-xl font-bold mb-4">Delete this tweet?</h2>
+            <p className="mb-6 text-gray-300">
+              This action cannot be undone.
+            </p>
+            <div className="flex justify-center gap-4">
+              <button
+                onClick={confirmDelete}
+                className="bg-red-600 hover:bg-red-700 px-4 py-2 rounded text-white"
+              >
+                Yes, delete
+              </button>
+              <button
+                onClick={() => setShowModal(false)}
+                className="bg-gray-600 hover:bg-gray-700 px-4 py-2 rounded text-white"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
         </div>
-        <div className="text-sm text-gray-500">
-          {dayjs(tweet.date).fromNow()}
-        </div>
-      </div>
-    </div>
+      )}
+    </>
   );
 }
