@@ -15,6 +15,11 @@ export default function HashtagPage() {
   const [refreshFlag, setRefreshFlag] = useState(false);
 
   const [token, setToken] = useState(null);
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("username");
+    router.push("/");
+  };
 
   // Get token from localStorage
   useEffect(() => {
@@ -54,14 +59,21 @@ export default function HashtagPage() {
 
   return (
     <div className="flex h-screen w-full bg-[#15202B] text-white">
-      <aside className="w-1/4 p-6 border-r border-gray-700">
-        <img
-          src="/logo.png"
-          className="w-10 transform -scale-x-100 cursor-pointer mb-6"
-          onClick={() => router.push("/home")}
-          alt="Logo"
-        />
-        <div className="text-lg font-semibold"># Hashtag</div>
+      <aside className="w-1/4 p-6 flex flex-col justify-between border-r border-gray-700">
+        <div>
+          <img
+            src="/logo.png"
+            className="w-30 transform -scale-x-100 cursor-pointer m-4"
+            onClick={() => router.push("/home")}
+            alt="Logo"
+          />
+        </div>
+        <button
+          onClick={handleLogout}
+          className=" m-4 mt-2 px-10 py-2 text-white border border-gray-700 hover:border-gray-500 hover:drop-shadow-lg  rounded-full transition duration-200 self-start cursor-pointer"
+        >
+          Logout
+        </button>
       </aside>
 
       <main className="w-2/4 p-6 border-x border-gray-700 overflow-y-auto">
