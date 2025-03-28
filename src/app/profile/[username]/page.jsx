@@ -15,6 +15,8 @@ export default function Profile() {
   const [isLoading, setIsLoading] = useState(true);
   const [tweets, setTweets] = useState([]);
   const [isFollowing, setIsFollowing] = useState(false);
+  const [followersCount, setFollowersCount] = useState(0);
+  const [followingCount, setFollowingCount] = useState(0);
 
   const isOwnProfile = !viewedUsername || viewedUsername === username;
 
@@ -51,32 +53,39 @@ export default function Profile() {
     fetchTweets();
   }, [username, viewedUsername]);
 
-  // Fetch target user's token and following status
+  // Fetch token of viewed user + connections
   useEffect(() => {
     const fetchConnectionStatus = async () => {
-      if (!viewedUsername || !token || viewedUsername === username) return;
+      if (!token) return;
 
-      // Step 1: Get targetToken from backend
+      const userToCheck = viewedUsername || username;
+
+      // Step 1: Get target token
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/users/${viewedUsername}`
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/users/${userToCheck}`
       );
       const data = await res.json();
       if (!data.result) return;
 
-      setTargetToken(data.user.token);
+      const theirToken = data.user.token;
+      setTargetToken(theirToken);
 
-      // Step 2: Get current user's following list
+      // Step 2: Get follower/following info
       const con = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/users/connections/${token}`
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/users/connections/${theirToken}`
       );
       const list = await con.json();
       if (list.result) {
-        const followingUsernames = list.following.map((u) => u.username);
-        setIsFollowing(followingUsernames.includes(viewedUsername));
+        setFollowersCount(list.followers.length);
+        setFollowingCount(list.following.length);
+        if (!isOwnProfile) {
+          const usernames = list.followers.map((u) => u.username);
+          setIsFollowing(usernames.includes(username));
+        }
       }
     };
     fetchConnectionStatus();
-  }, [token, username, viewedUsername]);
+  }, [token, username, viewedUsername, isOwnProfile]);
 
   const handleFollowToggle = async () => {
     if (!token || !targetToken) return;
@@ -93,6 +102,7 @@ export default function Profile() {
     const data = await res.json();
     if (data.result) {
       setIsFollowing(data.following);
+      setFollowersCount((prev) => prev + (data.following ? 1 : -1));
     }
   };
 
@@ -127,7 +137,15 @@ export default function Profile() {
 
       <main className="w-2/4 p-10 border-x border-gray-700 overflow-y-auto scrollbar-hidden">
         <div className="flex items-center justify-between">
-          <ProfileBlock username={displayName} />
+          <div>
+            <ProfileBlock username={displayName} />
+            <div className="text-gray-400 text-lg ml-2 mt-4">
+              <span>
+                {followersCount} follower{followersCount !== 1 ? "s" : ""}
+              </span>{" "}
+              · <span>{followingCount} following</span>
+            </div>
+          </div>
           {!isOwnProfile && (
             <button
               onClick={handleFollowToggle}
@@ -141,6 +159,7 @@ export default function Profile() {
             </button>
           )}
         </div>
+
         <h2 className="text-xl font-bold my-6 ml-2">Tweets</h2>
         <div className="space-y-4">
           {tweets.length === 0 ? (
