@@ -24,16 +24,14 @@ export default function LastTweets({ refresh }) {
       {tweets.length === 0 ? (
         <p className="text-gray-400">No tweets found.</p>
       ) : (
-        tweets
-          .slice(0, 30)
-          .map((tweet) => (
-            <Tweet
-              key={tweet._id}
-              tweet={tweet}
-              onDelete={fetchTweets}
-              onLike={fetchTweets}
-            />
-          ))
+        tweets.map((tweet) => (
+          <Tweet
+            key={tweet._id}
+            tweet={tweet}
+            onDelete={fetchTweets}
+            onLike={fetchTweets}
+          />
+        ))
       )}
     </div>
   );

@@ -14,6 +14,7 @@ export default function Profile() {
   const [targetToken, setTargetToken] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [tweets, setTweets] = useState([]);
+  const [refreshFlag, setRefreshFlag] = useState(false);
   const [isFollowing, setIsFollowing] = useState(false);
   const [followersCount, setFollowersCount] = useState(0);
   const [followingCount, setFollowingCount] = useState(0);
@@ -36,7 +37,7 @@ export default function Profile() {
     }
   }, [isLoading, token, router]);
 
-  // Fetch tweets
+  // Fetch tweets (watch refreshFlag)
   useEffect(() => {
     const fetchTweets = async () => {
       const name = viewedUsername || username;
@@ -51,7 +52,7 @@ export default function Profile() {
       }
     };
     fetchTweets();
-  }, [username, viewedUsername]);
+  }, [username, viewedUsername, refreshFlag]);
 
   // Fetch token of viewed user + connections
   useEffect(() => {
@@ -60,7 +61,6 @@ export default function Profile() {
 
       const userToCheck = viewedUsername || username;
 
-      // Step 1: Get target token
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/users/${userToCheck}`
       );
@@ -70,7 +70,6 @@ export default function Profile() {
       const theirToken = data.user.token;
       setTargetToken(theirToken);
 
-      // Step 2: Get follower/following info
       const con = await fetch(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/users/connections/${theirToken}`
       );
@@ -169,9 +168,8 @@ export default function Profile() {
               <Tweet
                 key={tweet._id}
                 tweet={tweet}
-                onDelete={() =>
-                  setTweets((prev) => prev.filter((t) => t._id !== tweet._id))
-                }
+                onDelete={() => setRefreshFlag((prev) => !prev)}
+                onLike={() => setRefreshFlag((prev) => !prev)}
               />
             ))
           )}
