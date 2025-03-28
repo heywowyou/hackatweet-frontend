@@ -32,7 +32,7 @@ export default function AddTweet({ onTweetPosted }) {
         value={content}
         onChange={(e) => setContent(e.target.value)}
         rows={1}
-        className="w-full h-20 px-10 border border-gray-700 rounded-full resize-none bg-[#192734] text-white placeholder:text-gray-400 text-lg leading-[4.4] overflow-hidden"
+        className="w-full h-20 px-10 border border-gray-700 rounded-full resize-none bg-[#192734] text-white placeholder:text-gray-400 text-lg leading-[4.4] overflow-hidden focus:placeholder-transparent"
       />
       <div className="flex justify-between mx-10">
         <span className="text-base text-gray-400">{content.length}/280</span>
