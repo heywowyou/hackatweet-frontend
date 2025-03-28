@@ -2,8 +2,10 @@
 import { useState } from "react";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
-dayjs.extend(relativeTime);
 import { useRouter } from "next/navigation";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHeart, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+dayjs.extend(relativeTime);
 
 export default function Tweet({ tweet, onLike, onDelete }) {
   const token = localStorage.getItem("token");
@@ -102,7 +104,14 @@ export default function Tweet({ tweet, onLike, onDelete }) {
       </div>
 
       <div className="mt-3 flex items-center gap-2">
-        <button onClick={handleLike}>{isLiked ? "❤️" : "🤍"}</button>
+        <button onClick={handleLike}>
+          <FontAwesomeIcon
+            icon={faHeart}
+            className={`text-xl transition-colors ${
+              isLiked ? "text-red-500" : "text-white"
+            } hover:text-red-400`}
+          />
+        </button>
         <span className="text-sm text-gray-400">{likeCount}</span>
       </div>
     </div>
