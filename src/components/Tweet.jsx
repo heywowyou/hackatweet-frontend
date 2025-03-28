@@ -3,10 +3,12 @@ import { useState } from "react";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 dayjs.extend(relativeTime);
+import { useRouter } from "next/navigation";
 
 export default function Tweet({ tweet, onLike, onDelete }) {
   const token = localStorage.getItem("token");
   const currentUserId = localStorage.getItem("userId");
+  const router = useRouter();
 
   const [isLiked, setIsLiked] = useState(
     tweet.likes.some((user) => user._id === currentUserId)
@@ -55,29 +57,35 @@ export default function Tweet({ tweet, onLike, onDelete }) {
     <div className="border border-gray-700 p-4 rounded shadow-sm">
       <div className="flex justify-between">
         <div className="flex gap-3">
-          <img
-            src="/oeuf.jpg"
-            alt="Avatar"
-            className="w-16 h-16 rounded-full object-cover border border-gray-800"
-          />
-          <div>
-            <div className="font-semibold">@{tweet.author.username}</div>
-            <div className="mt-1">
-              {tweet.content.split(/(\s+)/).map((part, i) =>
-                part.startsWith("#") ? (
-                  <span
-                    key={i}
-                    className="text-blue-400 hover:underline cursor-pointer"
-                  >
-                    {part}
-                  </span>
-                ) : (
-                  <span key={i}>{part}</span>
-                )
-              )}
-            </div>
-            <div className="text-sm text-gray-500 mt-2">
-              {dayjs(tweet.date).fromNow()}
+          {/* Avatar + name are now clickable */}
+          <div
+            className="flex gap-3 cursor-pointer"
+            onClick={() => router.push(`/profile/${tweet.author.username}`)}
+          >
+            <img
+              src={tweet.author.avatar || "/oeuf.jpg"}
+              alt="Avatar"
+              className="w-16 h-16 rounded-full object-cover border border-gray-800"
+            />
+            <div>
+              <div className="font-semibold">@{tweet.author.username}</div>
+              <div className="mt-1">
+                {tweet.content.split(/(\s+)/).map((part, i) =>
+                  part.startsWith("#") ? (
+                    <span
+                      key={i}
+                      className="text-blue-400 hover:underline cursor-pointer"
+                    >
+                      {part}
+                    </span>
+                  ) : (
+                    <span key={i}>{part}</span>
+                  )
+                )}
+              </div>
+              <div className="text-sm text-gray-500 mt-2">
+                {dayjs(tweet.date).fromNow()}
+              </div>
             </div>
           </div>
         </div>

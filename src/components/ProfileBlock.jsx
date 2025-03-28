@@ -5,7 +5,9 @@ export default function ProfileBlock({ username }) {
   const router = useRouter();
 
   const goToProfile = () => {
-    router.push("/profile");
+    if (username) {
+      router.push(`/profile/${username}`);
+    }
   };
 
   return (

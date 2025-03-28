@@ -1,15 +1,20 @@
 "use client";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import ProfileBlock from "../../components/ProfileBlock";
-import Tweet from "../../components/Tweet";
+import { useRouter, useParams } from "next/navigation";
+import ProfileBlock from "../../../components/ProfileBlock";
+import Tweet from "../../../components/Tweet";
 
 export default function Profile() {
   const router = useRouter();
+  const params = useParams();
+  const viewedUsername = params?.username; // from URL if viewing another user
+
   const [username, setUsername] = useState("");
   const [token, setToken] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [tweets, setTweets] = useState([]);
+
+  const isOwnProfile = !viewedUsername;
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -27,12 +32,14 @@ export default function Profile() {
     }
   }, [isLoading, token, router]);
 
-  // Fetch tweets by the current user
+  // Fetch tweets for current user or viewed profile
   useEffect(() => {
     const fetchTweets = async () => {
-      if (!username) return;
+      const usernameToQuery = viewedUsername || username;
+      if (!usernameToQuery) return;
+
       const response = await fetch(
-        `http://localhost:3001/tweets/user/${username}`
+        `http://localhost:3001/tweets/user/${usernameToQuery}`
       );
       const data = await response.json();
       if (data.result) {
@@ -40,7 +47,7 @@ export default function Profile() {
       }
     };
     fetchTweets();
-  }, [username]);
+  }, [username, viewedUsername]);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -49,6 +56,8 @@ export default function Profile() {
   };
 
   if (isLoading) return null;
+
+  const displayName = viewedUsername || username;
 
   return (
     <div className="flex h-screen w-full bg-[#15202B] text-white">
@@ -61,17 +70,18 @@ export default function Profile() {
             alt="Logo"
           />
         </div>
-        <button
-          onClick={handleLogout}
-          className="m-4 mt-2 px-10 py-2 text-white border border-gray-700 hover:border-gray-500 hover:drop-shadow-lg rounded-full transition duration-200 self-start cursor-pointer"
-        >
-          Logout
-        </button>
+        {isOwnProfile && (
+          <button
+            onClick={handleLogout}
+            className="m-4 mt-2 px-10 py-2 text-white border border-gray-700 hover:border-gray-500 hover:drop-shadow-lg rounded-full transition duration-200 self-start cursor-pointer"
+          >
+            Logout
+          </button>
+        )}
       </aside>
 
       <main className="w-2/4 p-10 border-x border-gray-700 overflow-y-auto scrollbar-hidden">
-        <ProfileBlock username={username} />
-
+        <ProfileBlock username={displayName} />
         <h2 className="text-xl font-bold my-6 ml-2">Tweets</h2>
         <div className="space-y-4">
           {tweets.length === 0 ? (
