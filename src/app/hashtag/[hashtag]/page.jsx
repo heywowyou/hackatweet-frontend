@@ -83,11 +83,11 @@ export default function HashtagPage() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search another hashtag..."
-            className="flex-1 p-2 rounded bg-[#192734] border border-gray-600 placeholder-gray-400"
+            className="flex-1 p-2 h-20 px-10 rounded-3xl bg-[#192734] border border-gray-600 text-lg placeholder-gray-400 focus:placeholder-transparent"
           />
           <button
             type="submit"
-            className="bg-blue-500 px-4 rounded hover:bg-blue-600"
+            className="bg-blue-500 px-4 h-12 w-30 rounded-full hover:bg-blue-600 self-center"
           >
             Search
           </button>
