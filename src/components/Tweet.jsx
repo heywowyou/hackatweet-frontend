@@ -4,7 +4,7 @@ import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { useRouter } from "next/navigation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHeart, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import { faHeart, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 dayjs.extend(relativeTime);
 
 export default function Tweet({ tweet, onLike, onDelete }) {
@@ -98,7 +98,7 @@ export default function Tweet({ tweet, onLike, onDelete }) {
             className="text-red-400 hover:text-red-600 text-lg"
             title="Delete tweet"
           >
-            🗑️
+            <FontAwesomeIcon icon={faTrashAlt} />
           </button>
         )}
       </div>
