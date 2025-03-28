@@ -4,15 +4,16 @@ import { useRouter } from "next/navigation";
 export default function ProfileBlock({ username }) {
   const router = useRouter();
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("username");
-    router.push("/");
+  const goToProfile = () => {
+    router.push("/profile");
   };
 
   return (
     <div className="flex flex-col items-start gap-4">
-      <div className="flex items-center gap-3">
+      <div
+        className="flex items-center gap-3 cursor-pointer"
+        onClick={goToProfile}
+      >
         <img
           src="/oeuf.jpg"
           alt="Avatar"
